@@ -1,46 +1,36 @@
 #include <stdio.h>
-#include <string.h>
-
-/*
-    # 구조체
-    : 다양한 자료형의 변수들을 묶어서 정의한 새로운 자료형
-    키워드 : struct
-
-    * 구조체 정의
-    struct 구조체이름 {
-        자료형1 변수1;
-        자료형2 변수2;
-        ...
-    };
-
-    * 구조체 선언
-    struct 구조체이름 변수이름;
-*/
-
-// 구조체 정의
-struct person {
-    // 이름, 나이
-    char name[30];
-    int age;
-};
 
 int main(void) {
+  
+    // 파일 열기
+    FILE *fp;           // FILE 구조체 포인터 변수 선언
+    char ch;
     
-    // 구조체 선언
-    struct person boy, girl;
+    // fopen("경로/파일이름", "모드");
+    // - 모드 : r(읽기), w(쓰기), a(추가)
+    // - 파일 읽기 실패 : NULL 반환
+    fp = fopen("test.txt", "r");
+    if( fp == NULL ) {
+        printf("파일 읽기 실패!\n");
+        return 1;
+    } 
 
-    // 멤버 접근 연산자(.)
-    // boy, girl의 name(이름)에 문자열을 복사
-    strcpy(boy.name, "김코딩");
-    strcpy(girl.name, "이코딩");
+    printf("파일 열기 성공\n");
 
-    // boy, girl 의 age(나이)
-    boy.age = 20;
-    girl.age = 10;
+    // 텍스트 파일의 내용 가져오기
+    while(1) {
+        // fgetc() : 문자 입력 함수
+        // - 파일에서 하나의 문자를 입력받아 반환하는 함수
+        ch = fgetc(fp);
+        // EOF : 파일의 마지막을 의미
+        if( ch == EOF ) {
+            break;
+        }
+        putchar(ch);        // 문자 출력 함수
+    }
 
-    // 출력
-    printf("boy 의 이름은 %s, 나이는 %d \n", boy.name, boy.age);
-    printf("girl 의 이름은 %s, 나이는 %d \n", girl.name, girl.age);
+    // 파일 닫기
+    fclose(fp);
 
     return 0;
 }

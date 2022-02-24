@@ -1,49 +1,45 @@
 #include <stdio.h>
 #include <string.h>
 
-/*
-    # 구조체 배열
-    : 배열의 요소가 구조체로 이루어진 배열
-    
-    * 배열 : 같은 자료형인 여러 개의 데이터를 저장하는 변수
-*/
-
-// 구조체 정의
-struct person {
-    // 이름, 나이
-    char name[30];
-    int age;
-};
-
 int main(void) {
     
-    // 구조체 배열 선언
-    struct person boy[5] = {
-        {"김코딩", 12},
-        {"곽코딩", 14},
-        {"류코딩", 16},
-        {"민코딩", 18},
-        {"이코딩", 20}
-    };
+    FILE *ifp, *ofp;    // 파일 포인터 선언
+    char str[100];      // 입력 문자열 
+    char *res;          
 
-    // 구조체 배열 선언
-    struct person girl[5];
-    strcpy( girl[0].name, "이코딩");
-    strcpy( girl[1].name, "조코딩");
-    strcpy( girl[2].name, "정코딩");
-    strcpy( girl[3].name, "문코딩");
-    strcpy( girl[4].name, "박코딩");
-
-    girl[0].age = 12;
-    girl[1].age = 14;
-    girl[2].age = 16;
-    girl[3].age = 18;
-    girl[4].age = 20;
-
-    // 출력
-    for (int i = 0; i < 5; i++) {
-        printf("boy 의 이름은 %s, 나이는 %d \n", boy[i].name, boy[i].age);
-        printf("girl 의 이름은 %s, 나이는 %d \n", girl[i].name, girl[i].age);
+    // 파일 입력
+    ifp = fopen("test.txt", "r");
+    if( ifp == NULL ){
+        printf("파일 읽기 실패\n");
+        return 1;
     }
+
+    // 파일 출력
+    ofp = fopen("copy.txt", "w");
+    if( ifp == NULL ){
+        printf("파일 생성 실패\n");
+        return 1;
+    }
+
+    while(1) {
+        // fgets(입력배열, 배열의크기, 파일포인터)
+        // : 파일을 한 줄씩 입력받는 함수
+        // - 입력 실패 : NULL 반환
+        // test.txt 의 텍스트를 한 줄씩 읽어와서 str 배열에 저장
+        res = fgets(str, sizeof(str), ifp);
+        if( res == NULL ) {
+            break;
+        }
+        str[strlen(str) - 1] = '\0';
+        // fputs(문자열, 파일포인터)
+        // : 파일에 한 줄씩 문자열을 출력하는 함수
+        fputs(str, ofp);
+        fputs("\n", ofp);  // 줄바꿈
+    }
+
+    // 파일 닫기
+    fclose(ifp);
+    fclose(ofp);
+
     return 0;
 }
